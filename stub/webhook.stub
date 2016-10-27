@@ -1,6 +1,6 @@
 <?php namespace DummyNamespace;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Oz\Webhooks\Http\WebhookRequest;
 
 class DummyClass extends WebhookRequest
 {
