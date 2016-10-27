@@ -1,6 +1,6 @@
-<?php namespace Oz\Webhook\Handler;
+<?php namespace Oz\Webhooks\Handler;
 
-use Oz\Webhook\Contract\WebhookInterface;
+use Oz\Webhooks\Contract\WebhooksInterface;
 
 class EventClassHandler
 {
@@ -42,10 +42,10 @@ class EventClassHandler
     /**
      * Handle the transformation to the event class.
      *
-     * @param WebhookInterface $webhooks
+     * @param WebhooksInterface $webhooks
      * @return string
      */
-    public function handle(WebhookInterface $webhooks)
+    public function handle(WebhooksInterface $webhooks)
     {
         $class = $this->getEventClassFromMap($this->getEventClass($webhooks));
 
@@ -60,10 +60,10 @@ class EventClassHandler
     /**
      * Get the event class.
      *
-     * @param WebhookInterface $webhooks
+     * @param WebhooksInterface $webhooks
      * @return string
      */
-    protected function getEventClass(WebhookInterface $webhooks)
+    protected function getEventClass(WebhooksInterface $webhooks)
     {
         return $webhooks->getEventsNamespace() . $this->getWebhookName() . $this->getEventName();
     }

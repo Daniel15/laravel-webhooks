@@ -1,4 +1,4 @@
-<?php namespace Oz\Webhook\Handler;
+<?php namespace Oz\Webhooks\Handler;
 
 class WebhookClassHandler
 {

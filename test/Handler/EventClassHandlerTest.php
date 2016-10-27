@@ -1,7 +1,7 @@
 <?php namespace Oz\Webhook\Test\Handler;
 
-use Oz\Webhook\Handler\EventClassHandler;
-use Oz\Webhook\Webhook;
+use Oz\Webhooks\Handler\EventClassHandler;
+use Oz\Webhooks\Webhooks;
 
 class EventClassHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -70,7 +70,7 @@ class EventClassHandlerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getEventClass($webhookName, $eventName)
     {
-        $webhook = \Mockery::mock(Webhook::class);
+        $webhook = \Mockery::mock(Webhooks::class);
 
         $webhook->shouldReceive('getEventsNamespace')->andReturn('App\\Events\\');
 

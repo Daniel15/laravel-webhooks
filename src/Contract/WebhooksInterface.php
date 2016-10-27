@@ -1,6 +1,6 @@
-<?php namespace Oz\Webhook\Contract;
+<?php namespace Oz\Webhooks\Contract;
 
-interface WebhookInterface
+interface WebhooksInterface
 {
 
     /**

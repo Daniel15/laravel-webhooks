@@ -1,4 +1,4 @@
-<?php namespace Oz\Webhook\Console;
+<?php namespace Oz\Webhooks\Console;
 
 use Illuminate\Console\GeneratorCommand;
 

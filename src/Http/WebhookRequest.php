@@ -1,7 +1,7 @@
-<?php namespace Oz\Webhook\Http;
+<?php namespace Oz\Webhooks\Http;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Oz\Webhook\Handler\EventClassHandler;
+use Oz\Webhooks\Handler\EventClassHandler;
 
 class WebhookRequest extends FormRequest
 {

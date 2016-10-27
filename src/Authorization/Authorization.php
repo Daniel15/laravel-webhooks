@@ -1,4 +1,4 @@
-<?php namespace Oz\Webhook\Authorization;
+<?php namespace Oz\Webhooks\Authorization;
 
 use Illuminate\Http\Request;
 

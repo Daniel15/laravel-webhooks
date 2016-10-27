@@ -1,5 +1,5 @@
 {
-    "name": "oz/webhook",
+    "name": "oz/webhooks",
     "description": "Easily organize and secure your webhooks and map them to Laravel events.",
     "type": "library",
     "require": {
@@ -18,13 +18,13 @@
     ],
     "autoload": {
         "psr-4": {
-            "Oz\\Webhook\\": "src/"
+            "Oz\\Webhooks\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Oz\\Webhook\\Test\\": "test",
-            "Oz\\Webhook\\Stub\\": "stub"
+            "Oz\\Webhooks\\Test\\": "test",
+            "Oz\\Webhooks\\Stub\\": "stub"
         }
     },
     "extra": {

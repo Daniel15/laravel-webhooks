@@ -1,6 +1,6 @@
-<?php namespace Oz\Webhook\Http;
+<?php namespace Oz\Webhooks\Http;
 
-class WebhookController
+class WebhooksController
 {
 
     /**
