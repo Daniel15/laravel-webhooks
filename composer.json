@@ -1,5 +1,5 @@
 {
-    "name": "oz/webhooks",
+    "name": "obrignoni/webhooks",
     "description": "Easily organize and secure your webhooks and map them to Laravel events.",
     "type": "library",
     "require": {
