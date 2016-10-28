@@ -1,9 +1,10 @@
 <?php namespace Oz\Webhooks\Http;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Oz\Webhooks\Handler\EventClassHandler;
+use Oz\Webhooks\Contract\EventClassHandlerInterface;
+use Oz\Webhooks\Contract\WebhooksInterface;
 
-class WebhookRequest extends FormRequest
+abstract class WebhookRequest extends FormRequest
 {
 
     /**
@@ -37,7 +38,7 @@ class WebhookRequest extends FormRequest
     /**
      * Determine if the request passes the authorization check.
      *
-     * @return bool
+     * @return boolean
      */
     protected function passesAuthorization()
     {
@@ -49,24 +50,42 @@ class WebhookRequest extends FormRequest
     }
 
     /**
-     * @param string $hookName
+     * Fire an event.
+     *
+     * @param string
      *
      * @return void
      */
-    public function call($hookName)
+    public function fireEvent()
     {
-        if (class_exists($eventClass = $this->getEventClass($hookName))) {
+        if (class_exists($eventClass = $this->getEventClass())) {
             event(new $eventClass($this->request->all()));
         }
     }
 
     /**
-     * @param string $hookName
+     * Get the event class.
+     *
      * @return string
      */
-    public function getEventClass($hookName)
+    protected function getEventClass()
     {
-        return app()->call(EventClassHandler::class . '@handle', [$hookName, $this->getEventName(), $this->getEvents()]);
+        return $this->getEventClassHandler()->getEventClass();
+    }
+
+    /**
+     * Get the event class handler.
+     *
+     * @return EventClassHandlerInterface
+     */
+    protected function getEventClassHandler()
+    {
+        return app(EventClassHandlerInterface::class, [
+            app(WebhooksInterface::class),
+            $this->getWebhookName(),
+            $this->getEventName(),
+            $this->getEvents(),
+        ]);
     }
 
     /**
@@ -74,7 +93,7 @@ class WebhookRequest extends FormRequest
      *
      * @return array|string
      */
-    public function getEvents()
+    protected function getEvents()
     {
         return $this->events;
     }
@@ -84,7 +103,7 @@ class WebhookRequest extends FormRequest
      *
      * @return null|string
      */
-    public function getEventField()
+    protected function getEventField()
     {
         return $this->eventField;
     }
@@ -92,9 +111,19 @@ class WebhookRequest extends FormRequest
     /**
      * @return string
      */
-    public function getEventName()
+    protected function getEventName()
     {
         return $this->request->get($this->getEventField());
+    }
+
+    /**
+     * Get the webhook class.
+     *
+     * @return string
+     */
+    protected function getWebhookName()
+    {
+        return class_basename(get_called_class());
     }
 
 }
