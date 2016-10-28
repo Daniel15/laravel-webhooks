@@ -36,13 +36,9 @@ class Webhooks implements WebhooksInterface
     public function call($name)
     {
         /** @var WebhookRequest $webhook */
-        if ($webhook = $this->getWebhookRequest($name))
-        {
-
+        if ($webhook = $this->getWebhookRequest($name)) {
             $webhook->fireEvent();
-        }
-        else
-        {
+        } else {
             abort(404, 'Webhook not found.');
         }
     }
@@ -57,8 +53,7 @@ class Webhooks implements WebhooksInterface
     {
         $webhookRequest = $this->getWebhookClass($name);
 
-        if ( ! class_exists($webhookRequest))
-        {
+        if (!class_exists($webhookRequest)) {
             return null;
         }
 
