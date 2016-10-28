@@ -1,6 +1,8 @@
 <?php namespace Oz\Webhooks;
 
+use Oz\Webhooks\Contract\WebhookClassHandlerInterface;
 use Oz\Webhooks\Contract\WebhooksInterface;
+use Oz\Webhooks\Http\WebhookRequest;
 
 class Webhooks implements WebhooksInterface
 {
@@ -12,7 +14,7 @@ class Webhooks implements WebhooksInterface
      */
     public function getEventsNamespace()
     {
-        return config('webhooks.events.namespace', 'App\\Events\\');
+        return app()->getNamespace() . 'Events';
     }
 
     /**
@@ -20,9 +22,68 @@ class Webhooks implements WebhooksInterface
      *
      * @return string
      */
-    public function getWebhookRequestNamespace()
+    public function getWebhooksNamespace()
     {
-        return config('webhooks.requests.namespace', 'App\\Http\\Requests\\');
+        return config('webhooks.namespace', app()->getNamespace() . 'Http\\Webhooks');
     }
-    
+
+    /**
+     * Call a webhook by name.
+     *
+     * @param string $name
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function call($name)
+    {
+        /** @var WebhookRequest $webhook */
+        if ($webhook = $this->getWebhookRequest($name))
+        {
+
+            $webhook->fireEvent();
+        }
+        else
+        {
+            abort(404, 'Webhook not found.');
+        }
+    }
+
+    /**
+     * Get the webhook request.
+     *
+     * @param string $name
+     * @return WebhookRequest|null
+     */
+    protected function getWebhookRequest($name)
+    {
+        $webhookRequest = $this->getWebhookClass($name);
+
+        if ( ! class_exists($webhookRequest))
+        {
+            return null;
+        }
+
+        return app($webhookRequest);
+    }
+
+    /**
+     * Get the webhook request class.
+     *
+     * @param string $name
+     * @return string
+     */
+    protected function getWebhookClass($name)
+    {
+        return $this->getWebhookClassHandler()->getWebhookClass($name);
+    }
+
+    /**
+     * Get the webhook class handler.
+     *
+     * @return WebhookClassHandlerInterface
+     */
+    protected function getWebhookClassHandler()
+    {
+        return app(WebhookClassHandlerInterface::class);
+    }
+
 }
