@@ -1,8 +1,9 @@
 <?php namespace Oz\Webhooks\Handler;
 
+use Oz\Webhooks\Contract\EventClassHandlerInterface;
 use Oz\Webhooks\Contract\WebhooksInterface;
 
-class EventClassHandler
+class EventClassHandler implements EventClassHandlerInterface
 {
 
     /**
@@ -27,56 +28,67 @@ class EventClassHandler
     protected $eventMap;
 
     /**
+     * The webhooks object.
+     *
+     * @var WebhooksInterface
+     */
+    protected $webhooks;
+
+    /**
      * EventClassHandler constructor.
+     * @param WebhooksInterface $webhooks
      * @param $webhookName
      * @param string $eventName
-     * @param $eventMap
+     * @param array $eventMap
      */
-    public function __construct($webhookName, $eventName, array $eventMap = [])
+    public function __construct(WebhooksInterface $webhooks, $webhookName, $eventName, $eventMap = [])
     {
         $this->eventName = $eventName;
         $this->webhookName = $webhookName;
         $this->eventMap = $eventMap;
+        $this->webhooks = $webhooks;
     }
 
     /**
-     * Handle the transformation to the event class.
+     * Get the event class.
      *
-     * @param WebhooksInterface $webhooks
      * @return string
      */
-    public function handle(WebhooksInterface $webhooks)
+    public function getEventClass()
     {
-        $class = $this->getEventClassFromMap($this->getEventClass($webhooks));
+        $class = $this->getEventClassFromMap();
 
-        if ( ! starts_with($class, $webhooks->getEventsNamespace()))
+        if ( ! starts_with($class, $this->webhooks->getEventsNamespace()))
         {
-            $class = $webhooks->getEventsNamespace() . $class;
+            $class = $this->webhooks->getEventsNamespace() . $class;
         }
 
         return $class;
     }
 
     /**
-     * Get the event class.
+     * Get the default event class.
      *
-     * @param WebhooksInterface $webhooks
      * @return string
      */
-    protected function getEventClass(WebhooksInterface $webhooks)
+    protected function getDefaultEventClass()
     {
-        return $webhooks->getEventsNamespace() . $this->getWebhookName() . $this->getEventName();
+        return $this->webhooks->getEventsNamespace() . '\\' . $this->getWebhookName() . $this->getEventName();
     }
 
     /**
      * Get the event class from the event map array or return a default value.
      *
-     * @param null $default
-     * @return mixed
+     * @return string|null
      */
-    protected function getEventClassFromMap($default = null)
+    protected function getEventClassFromMap()
     {
-        return array_get($this->eventMap, $this->eventName, $default);
+        if ( ! $this->eventName)
+        {
+            return null;
+        }
+
+        return array_get($this->eventMap, $this->eventName, $this->getDefaultEventClass());
     }
 
     /**
