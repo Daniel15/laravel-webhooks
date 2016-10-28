@@ -102,7 +102,7 @@ class Github extends WebhookRequest
     protected $eventField = '';
 
     /**
-     * Map each webhook event to a event class. If left empty, event names will be transformed to studly cased classes.
+     * Optional. Map each webhook event to a event class. If left empty, event names will be transformed to studly cased classes.
      *
      * Example: For a Github webhook, the pull_request event will be transformed to App\Events\GithubPullRequest.
      *
@@ -121,7 +121,7 @@ class Github extends WebhookRequest
     protected $events = [];
 
     /**
-     * The authorization handler class. Optional. Use a handler in lieu of the authorize method.
+     * Optional. The authorization handler class. Use a handler in lieu of the authorize method.
      *
      * @var string
      */
