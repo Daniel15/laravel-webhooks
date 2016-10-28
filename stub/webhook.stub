@@ -17,12 +17,14 @@ class DummyClass extends WebhookRequest
     protected $eventField = '';
 
     /**
-     * Get the events. Map each webhook event to a event class.
+     * Map each webhook event to a event class. If left empty, event names will be transformed to studly cased classes.
+     *
+     * Example: For a Github webhook, the pull_request event will be transformed to App\Events\GithubPullRequest.
      *
      * Example #1:
      *
      * $events = [
-     *    'PullRequestEvent' => 'App\Events\GithubPullRequestEvent',
+     *    'pull_request' => 'App\Events\MyCustomEvent',
      * ];
      *
      * Example #2:
