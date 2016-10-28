@@ -1,7 +1,25 @@
 <?php namespace Oz\Webhooks\Http;
 
+use Oz\Webhooks\Contract\WebhooksInterface;
+
 class WebhooksController
 {
+
+    /**
+     * @var WebhooksInterface
+     */
+    protected $webhooks;
+
+    /**
+     * The constructor.
+     *
+     * WebhooksController constructor.
+     * @param WebhooksInterface $webhooks
+     */
+    public function __construct(WebhooksInterface $webhooks)
+    {
+        $this->webhooks = $webhooks;
+    }
 
     /**
      * @param string $name
@@ -9,39 +27,11 @@ class WebhooksController
      */
     public function index($name)
     {
-        if ($webhook = $this->getWebhookRequest($name))
-        {
-            $webhook->call($name);
-        }
+        $this->webhooks->call($name);
 
         return response()->json([
             'ok' => true,
         ]);
-    }
-
-    /**
-     * @param string $name
-     * @return WebhookRequest|null
-     */
-    public function getWebhookRequest($name)
-    {
-        $webhookRequest = $this->getWebhookRequestClass($name);
-
-        if ( ! class_exists($webhookRequest))
-        {
-            return null;
-        }
-
-        return new $webhookRequest($name);
-    }
-
-    /**
-     * @param string $name
-     * @return string
-     */
-    protected function getWebhookRequestClass($name)
-    {
-        return 'App\\Http\\Requests\\Webhook' . studly_case($name);
     }
 
 }
