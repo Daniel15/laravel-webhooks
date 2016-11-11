@@ -4,7 +4,7 @@ This Laravel package helps you organize, secure and map webhooks to events.
 
 ### Installation
 
-To get started, install Passport via the Composer package manager:
+To get started, install Laravel Webhooks via the Composer package manager:
 
 ```
 composer require obrignoni/webhooks
@@ -13,24 +13,22 @@ composer require obrignoni/webhooks
 Next, register the Webhooks service provider in the providers array of your config/app.php configuration file:
 
 ```
-Oz\Webhooks\WebhooksServiceProvider::class,
+Obrignoni\Webhooks\WebhooksServiceProvider::class,
 ```
 
-### Why create a webhooks package? 
+### Why a webhooks package? 
 
-I wanted to...
+I want to...
 
-1. integrate my applications with webhooks from different services.
-2. keep my webhooks organized.
-3. secure my webhooks.
-4. map webhook events to Laravel events.
-5. do all this with a simple convention that felt as familiar as Laravel.
+1. integrate my applications with webhooks from multiple services.
+2. keep the webhooks organized and secure.
+3. map webhook events to Laravel events.
 
 ### Usage
 
 Lets take [Github Webhooks](https://developer.github.com/webhooks/) for example. 
 
-A github webhook payload looks like this...
+A Github webhook payload looks like this...
 
 ```
 POST /payload HTTP/1.1
@@ -85,53 +83,17 @@ Lets take a look at the generated class.
 ```php
 <?php namespace App\Http\Webhooks;
 
-use Oz\Webhooks\Http\WebhookRequest;
+use Obrignoni\Webhooks\Http\WebhookRequest;
 
 class Github extends WebhookRequest
 {
 
-    /**
-     * The event field from the headers or the request.
-     *
-     * Example:
-     *
-     * $eventField = 'X-GitHub-Event';
-     *
-     * @var string|null
-     */
     protected $eventField = '';
 
-    /**
-     * Optional. Map each webhook event to a event class. If left empty, event names will be transformed to studly cased classes.
-     *
-     * Example: For a Github webhook, the pull_request event will be transformed to App\Events\GithubPullRequest.
-     *
-     * Example #1:
-     *
-     * $events = [
-     *    'pull_request' => 'App\Events\MyCustomEvent',
-     * ];
-     *
-     * Example #2:
-     *
-     * $events = App\Events\SingleEventForAll;
-     *
-     * @var array|string
-     */
     protected $events = [];
 
-    /**
-     * Optional. The authorization handler class. Use a handler in lieu of the authorize method.
-     *
-     * @var string
-     */
     protected $authorization = null;
 
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return boolean
-     */
     public function authorize()
     {
         // Authorize the webhook the same way you would with a FormRequest.
@@ -139,11 +101,6 @@ class Github extends WebhookRequest
         return false;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
         return [
@@ -153,3 +110,66 @@ class Github extends WebhookRequest
 
 }
 ```
+
+We can setup our Github webhook like this...
+
+```php
+<?php namespace App\Http\Webhooks;
+
+use Obrignoni\Webhooks\Authorization\GithubAuthorization;
+use Obrignoni\Webhooks\Http\WebhookRequest;
+
+class Github extends WebhookRequest
+{
+
+    protected $eventField = 'X-GitHub-Event';
+
+    protected $authorization = GithubAuthorization::class;
+
+}
+```
+
+## Event Field
+
+The event field is the request parameter or header that contains the event value.
+
+### Authorization Handler
+
+The authorization handler can contain the logic to authorize the request. It should return a boolean value.
+
+The `$authorization` is set to the `GithubAuthorization` handler that is included with this package. 
+Using an authorization handler is optional and it can be used in lieu of the authorize.
+
+### Mapped Events
+
+You use the `$events` array to map each webhook event to an event class. If left empty, event names will be automatically 
+transformed to studly cased classes. For a Github webhook, the `pull_request` event will be transformed to 
+`App\Events\GithubPullRequest`.
+
+Here as an example of how to set up custom events.
+
+```php
+<?php namespace App\Http\Webhooks;
+
+use Obrignoni\Webhooks\Authorization\GithubAuthorization;
+use Obrignoni\Webhooks\Http\WebhookRequest;
+
+class Github extends WebhookRequest
+{
+
+    protected $field = 'X-GitHub-Event';
+
+    protected $authorization = GithubAuthorization::class;
+
+    protected $events = [
+        'issue_comment' => 'App\Events\SomebodyMadeACommentOnGithub',  
+        'pull_request' => 'App\Events\SomebodySubmittedAPullRequest',  
+    ];
+
+}
+```
+
+### Webhook Requests Extend Form Requests
+
+You have the option of using the `authorize` and `rules` methods just like [Form Requests](https://laravel.com/docs/5.3/validation#form-request-validation).
+
