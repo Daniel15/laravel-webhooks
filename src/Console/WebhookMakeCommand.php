@@ -1,8 +1,8 @@
-<?php namespace Oz\Webhooks\Console;
+<?php namespace Obrignoni\Webhooks\Console;
 
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Filesystem\Filesystem;
-use Oz\Webhooks\Contract\WebhooksInterface;
+use Obrignoni\Webhooks\Contract\WebhooksInterface;
 
 class WebhookMakeCommand extends GeneratorCommand
 {

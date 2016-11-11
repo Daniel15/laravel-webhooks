@@ -1,7 +1,7 @@
-<?php namespace Oz\Webhook\Test\Handler;
+<?php namespace Obrignoni\Webhook\Test\Handler;
 
-use Oz\Webhooks\Handler\EventClassHandler;
-use Oz\Webhooks\Webhooks;
+use Obrignoni\Webhooks\Handler\EventClassHandler;
+use Obrignoni\Webhooks\Webhooks;
 
 class EventClassHandlerTest extends \PHPUnit_Framework_TestCase
 {

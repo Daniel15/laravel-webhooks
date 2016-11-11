@@ -1,7 +1,7 @@
-<?php namespace Oz\Webhooks\Handler;
+<?php namespace Obrignoni\Webhooks\Handler;
 
-use Oz\Webhooks\Contract\WebhookClassHandlerInterface;
-use Oz\Webhooks\Contract\WebhooksInterface;
+use Obrignoni\Webhooks\Contract\WebhookClassHandlerInterface;
+use Obrignoni\Webhooks\Contract\WebhooksInterface;
 
 class WebhookClassHandler implements WebhookClassHandlerInterface
 {

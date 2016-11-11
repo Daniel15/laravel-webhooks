@@ -1,6 +1,6 @@
 <?php namespace DummyNamespace;
 
-use Oz\Webhooks\Http\WebhookRequest;
+use Obrignoni\Webhooks\Http\WebhookRequest;
 
 class DummyClass extends WebhookRequest
 {

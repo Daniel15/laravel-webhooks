@@ -18,13 +18,13 @@
     ],
     "autoload": {
         "psr-4": {
-            "Oz\\Webhooks\\": "src/"
+            "Obrignoni\\Webhooks\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Oz\\Webhooks\\Test\\": "test",
-            "Oz\\Webhooks\\Stub\\": "stub"
+            "Obrignoni\\Webhooks\\Test\\": "test",
+            "Obrignoni\\Webhooks\\Stub\\": "stub"
         }
     },
     "extra": {

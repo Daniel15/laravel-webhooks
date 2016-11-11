@@ -1,4 +1,4 @@
-<?php namespace Oz\Webhooks\Authorization;
+<?php namespace Obrignoni\Webhooks\Authorization;
 
 class GithubAuthorization extends Authorization
 {

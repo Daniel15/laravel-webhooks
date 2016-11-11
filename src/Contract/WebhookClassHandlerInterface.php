@@ -1,4 +1,4 @@
-<?php namespace Oz\Webhooks\Contract;
+<?php namespace Obrignoni\Webhooks\Contract;
 
 interface WebhookClassHandlerInterface
 {

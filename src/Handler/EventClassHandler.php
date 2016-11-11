@@ -1,7 +1,7 @@
-<?php namespace Oz\Webhooks\Handler;
+<?php namespace Obrignoni\Webhooks\Handler;
 
-use Oz\Webhooks\Contract\EventClassHandlerInterface;
-use Oz\Webhooks\Contract\WebhooksInterface;
+use Obrignoni\Webhooks\Contract\EventClassHandlerInterface;
+use Obrignoni\Webhooks\Contract\WebhooksInterface;
 
 class EventClassHandler implements EventClassHandlerInterface
 {

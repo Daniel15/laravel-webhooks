@@ -1,6 +1,6 @@
-<?php namespace Oz\Webhook\Stub;
+<?php namespace Obrignoni\Webhook\Stub;
 
-use Oz\Webhook\Http\WebhookRequest;
+use Obrignoni\Webhook\Http\WebhookRequest;
 
 class GithubWebhookRequest extends WebhookRequest
 {

@@ -1,8 +1,8 @@
-<?php namespace Oz\Webhooks\Http;
+<?php namespace Obrignoni\Webhooks\Http;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Oz\Webhooks\Contract\EventClassHandlerInterface;
-use Oz\Webhooks\Contract\WebhooksInterface;
+use Obrignoni\Webhooks\Contract\EventClassHandlerInterface;
+use Obrignoni\Webhooks\Contract\WebhooksInterface;
 
 abstract class WebhookRequest extends FormRequest
 {

@@ -1,6 +1,6 @@
-<?php namespace Oz\Webhooks\Http;
+<?php namespace Obrignoni\Webhooks\Http;
 
-use Oz\Webhooks\Contract\WebhooksInterface;
+use Obrignoni\Webhooks\Contract\WebhooksInterface;
 
 class WebhooksController
 {
