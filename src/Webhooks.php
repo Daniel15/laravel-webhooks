@@ -35,12 +35,28 @@ class Webhooks implements WebhooksInterface
      */
     public function call($name)
     {
+        if ($this->isDiscoverable($name))
+        {
+            return;
+        }
+
         /** @var WebhookRequest $webhook */
         if ($webhook = $this->getWebhookRequest($name)) {
             $webhook->fireEvent();
         } else {
             abort(404, 'Webhook not found.');
         }
+    }
+
+    /**
+     * Are webhooks discoverable.
+     *
+     * @param string $name
+     * @return boolean
+     */
+    public function isDiscoverable($name)
+    {
+        return in_array($name, config('webhooks.discoverable', []));
     }
 
     /**
