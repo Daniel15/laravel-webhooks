@@ -56,14 +56,7 @@ class EventClassHandler implements EventClassHandlerInterface
      */
     public function getEventClass()
     {
-        $class = $this->getEventClassFromMap();
-
-        if ( ! starts_with($class, $this->webhooks->getEventsNamespace()))
-        {
-            $class = $this->webhooks->getEventsNamespace() . $class;
-        }
-
-        return $class;
+        return $this->appendClassToEventNamespace($this->getEventClassFromMap());
     }
 
     /**
@@ -73,7 +66,7 @@ class EventClassHandler implements EventClassHandlerInterface
      */
     protected function getDefaultEventClass()
     {
-        return $this->webhooks->getEventsNamespace() . '\\' . $this->getWebhookName() . $this->getEventName();
+        return $this->appendClassToEventNamespace($this->getWebhookName() . $this->getEventName());
     }
 
     /**
@@ -121,6 +114,22 @@ class EventClassHandler implements EventClassHandlerInterface
     protected function transformName($name)
     {
         return studly_case(str_replace([':', '-'], '_', $name));
+    }
+
+    /**
+     * Append the class to the event namespace.
+     *
+     * @param string $class
+     * @return string
+     */
+    protected function appendClassToEventNamespace($class)
+    {
+        if ( ! starts_with($class, $this->webhooks->getEventsNamespace()))
+        {
+            $class = $this->webhooks->getEventsNamespace() . '\\' . $class;
+        }
+
+        return $class;
     }
 
 }

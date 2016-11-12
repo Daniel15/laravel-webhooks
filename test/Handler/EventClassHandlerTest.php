@@ -1,5 +1,6 @@
 <?php namespace Obrignoni\Webhook\Test\Handler;
 
+use Obrignoni\Webhooks\Contract\WebhooksInterface;
 use Obrignoni\Webhooks\Handler\EventClassHandler;
 use Obrignoni\Webhooks\Webhooks;
 
@@ -70,23 +71,24 @@ class EventClassHandlerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getEventClass($webhookName, $eventName)
     {
-        $webhook = \Mockery::mock(Webhooks::class);
+        $webhooks = \Mockery::mock(Webhooks::class);
 
-        $webhook->shouldReceive('getEventsNamespace')->andReturn('App\\Events\\');
+        $webhooks->shouldReceive('getEventsNamespace')->andReturn('App\\Events');
 
-        return $this->getEventClassHandler($webhookName, $eventName)->handle($webhook);
+        return $this->getEventClassHandler($webhooks, $webhookName, $eventName)->getEventClass();
     }
 
     /**
      * Get the event class handler.
      *
+     * @param WebhooksInterface $webhooks
      * @param $webhookName
      * @param $eventName
      * @return EventClassHandler
      */
-    protected function getEventClassHandler($webhookName, $eventName)
+    protected function getEventClassHandler($webhooks, $webhookName, $eventName)
     {
-        return new EventClassHandler($webhookName, $eventName, $this->eventMap);
+        return new EventClassHandler($webhooks, $webhookName, $eventName, $this->eventMap);
     }
 
 }
